@@ -1,0 +1,1 @@
+[ ] Define the responsabilities of each member
