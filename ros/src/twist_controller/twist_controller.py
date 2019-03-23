@@ -1,5 +1,4 @@
 import rospy
-
 from pid import PID
 from lowpass import LowPassFilter
 from yaw_controller import YawController
@@ -17,7 +16,7 @@ class Controller(object):
 
         # Init longitudinal controller
         mn = 0.0
-        mx = 0.2
+        mx = 0.5
         self.throttle_controller = PID(acc_kp, acc_ki, acc_kd, mn, mx)
 
         tau = 0.5
@@ -55,7 +54,8 @@ class Controller(object):
 
         throttle = self.throttle_controller.step(vel_error, sample_time)
         brake = 0
-
+        
+        # Brake or acclerate only 1 actor can work.
         if linear_vel == 0.0 and current_vel < 0.1:
             throttle = 0.0
             brake = 700

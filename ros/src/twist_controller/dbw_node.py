@@ -53,7 +53,7 @@ class DBWNode(object):
         self.brake_pub      = rospy.Publisher('/vehicle/brake_cmd', BrakeCmd, queue_size=1)
 
         # Create `Controller` object 
-        acc_kp = 0.8
+        acc_kp = 1.0
         acc_ki = 0.003
         acc_kd = 3.5    # Init kp,ki,kd for throttle pid
         
