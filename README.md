@@ -28,18 +28,21 @@ Ros system have 4 parts: Car/Simulator module, Perception module, Planning modul
 ---
 ## Ros Modules
 
-### Car/Simulator
-
-### Perception
-
-### Planning
-
-### Control
-
-#### Waypoint Follower
+### **1.Car/Simulator**
 
 
-#### DBW Node
+### **2.Perception**
+
+
+### **3.Planning**
+
+
+### **4.Control**
+
+#### 4.1 Waypoint Follower
+
+
+#### 4.2 DBW Node
 This node is responsible for acutatos control. It decomposition of the speed(linear,angular) into actuator control instructions.(In real world the instuction often use voltage/current)
 ![DBW](imgs/dbw_struct_01.png)
 ![DBW](imgs/dbw_struct_02.png)
