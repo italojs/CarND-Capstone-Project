@@ -31,15 +31,24 @@ Ros system have 4 parts: Car/Simulator module, Perception module, Planning modul
 ### **1.Car/Simulator**
 
 
+
+
 ### **2.Perception**
+
+
 
 
 ### **3.Planning**
 
 
+
+
 ### **4.Control**
 
-#### 4.1 Waypoint Follower
+
+
+#### 4.1 Waypoint Follower(motion control)
+This node was given by Udacity. It receive /final_waypoints and publishe proposed /twist_cmd. This node realize by method pure-pursuit.You can find more detail in [Chaptier 2.2](https://www.ri.cmu.edu/pub_files/2009/2/Automatic_Steering_Methods_for_Autonomous_Automobile_Path_Tracking.pdf)
 
 
 #### 4.2 DBW Node
@@ -50,8 +59,8 @@ This node is responsible for acutatos control. It decomposition of the speed(lin
 The `throttle` of dbw_node is completed follow the steps:
 1. 1st commits, use the code from the [workthrough](https://classroom.udacity.com/nanodegrees/nd013/parts/6047fe34-d93c-4f50-8336-b70ef10cb4b2/modules/e1a23b06-329a-4684-a717-ad476f0d8dff/lessons/462c933d-9f24-42d3-8bdc-a08a5fc866e4/concepts/6546d82d-6028-4210-a4b0-9d559662a881)
 2. analysis the module. 
-- **PID**:Add an integrate switcher to restrain the too big integrate values[pid.py line 21-25];
-- **PID**:Add a restrain of kd[pid.py line 30];
+- **PID**:Add an integrate switcher to restrain the too big integrate values(pid.py line 21-25);
+- **PID**:Add a restrain of kd(pid.py line 30);
 - **Max pedal**:Augment the max of the pedal value to 0.8.
 3. use the **dbw_test.py** to test the paramters.
 4. finally plot the speed-up curve
@@ -64,6 +73,10 @@ acc_kd = 3.5
 ```
 
 In real world design the auto-EPS and AEB controllers is very hard. But in this project it simplify a linear system,so I use the code from the workthrough directly. 
+
+
+
+
 
 
 
