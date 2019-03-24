@@ -1,6 +1,7 @@
 #!/usr/bin/env python
-
+import os
 import rospy
+import csv
 from std_msgs.msg import Bool
 from dbw_mkz_msgs.msg import ThrottleCmd, SteeringCmd, BrakeCmd, SteeringReport
 from geometry_msgs.msg import TwistStamped
@@ -53,7 +54,7 @@ class DBWNode(object):
         self.brake_pub      = rospy.Publisher('/vehicle/brake_cmd', BrakeCmd, queue_size=1)
 
         # Create `Controller` object 
-        acc_kp = 1.0
+        acc_kp = 1.5
         acc_ki = 0.003
         acc_kd = 3.5    # Init kp,ki,kd for throttle pid
         
@@ -68,10 +69,15 @@ class DBWNode(object):
 
         self.current_vel = None
         self.cur_ang_vel = None
-        self.dwb_enabled = None
+        self.dbw_enabled = None
         self.linear_vel = None
         self.angular_vel = None
         self.throttle = self.steering = self.brake = 0
+
+        # Create .csvfile to W
+        base_path = os.path.dirname(os.path.abspath(__file__))
+        self.speedfile = os.path.join(base_path, 'speed.csv')
+        self.speed_data = []
 
         self.loop()
 
@@ -81,16 +87,22 @@ class DBWNode(object):
             # Get predicted throttle, brake, and steering using `twist_controller`
             if None not in (self.current_vel, self.linear_vel, self.angular_vel):
                 self.throttle, self.brake, self.steering = self.controller.control(self.current_vel,
-                                                                                   self.dwb_enabled,
+                                                                                   self.dbw_enabled,
                                                                                    self.linear_vel,
                                                                                    self.angular_vel)
-            if self.dwb_enabled:
+            if self.dbw_enabled:
                 self.publish(self.throttle, self.brake, self.steering)
 
             rate.sleep()
+        
+        fieldnames = ['actual', 'proposed']
+        with open(self.speedfile, 'w') as csvfile:
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+            writer.writeheader()
+            writer.writerows(self.speed_data)
 
     def dbw_enabled_cb(self, msg):
-        self.dwb_enabled = msg
+        self.dbw_enabled = msg
 
     def twist_cb(self, msg):
         self.linear_vel = msg.twist.linear.x
@@ -98,6 +110,10 @@ class DBWNode(object):
 
     def velocity_cb(self, msg):
         self.current_vel = msg.twist.linear.x
+
+        if self.dbw_enabled and self.current_vel is not None:
+            self.speed_data.append({'actual': self.current_vel,
+                                       'proposed': self.linear_vel})
 
     def publish(self, throttle, brake, steer):
         tcmd = ThrottleCmd()
