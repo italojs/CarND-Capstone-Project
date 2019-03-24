@@ -42,7 +42,7 @@ class Controller(object):
 
         # Write to ros log
         # rospy.logwarn("Angular vel: {0}".format(angular_vel))
-        rospy.logwarn("Vref, Vfb:[%s, %s][m/s]",format(linear_vel),format(current_vel))
+        # rospy.logwarn("Vref, Vfb:[%s, %s][m/s]",format(linear_vel),format(current_vel))
         # rospy.logwarn("Target angular velocity: {0}".format(angular_vel))
         # rospy.logwarn("Current velocity: {0}".format(current_vel))
         # rospy.logwarn("Filtered velocity: {0}".format(self.vel_lpf.get()))
