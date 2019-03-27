@@ -1,5 +1,4 @@
 import rospy
-
 from pid import PID
 from lowpass import LowPassFilter
 from yaw_controller import YawController
@@ -10,16 +9,15 @@ ONE_MPH = 0.44704
 
 class Controller(object):
     def __init__(self, vehicle_mass, deceleration_limit, acceleration_limit, wheel_radius, wheel_base, steer_ratio,
-                 max_lat_accel, max_steer_angle):
+                 max_lat_accel, max_steer_angle, acc_kp, acc_ki, acc_kd):
+        # Init lateral controller         
         self.yaw_controller = YawController(wheel_base=wheel_base, steer_ratio=steer_ratio, min_speed=0.1,
                                             max_lat_accel=max_lat_accel, max_steer_angle=max_steer_angle)
 
-        kp = 0.3
-        ki = 0.1
-        kd = 0.0
+        # Init longitudinal controller
         mn = 0.0
-        mx = 0.2
-        self.throttle_controller = PID(kp, ki, kd, mn, mx)
+        mx = 0.5
+        self.throttle_controller = PID(acc_kp, acc_ki, acc_kd, mn, mx)
 
         tau = 0.5
         ts = 0.02
@@ -42,6 +40,13 @@ class Controller(object):
 
         steering = self.yaw_controller.get_steering(linear_vel, angular_vel, current_vel)
 
+        # Write to ros log
+        # rospy.logwarn("Angular vel: {0}".format(angular_vel))
+        # rospy.logwarn("Vref, Vfb:[%s, %s][m/s]",format(linear_vel),format(current_vel))
+        # rospy.logwarn("Target angular velocity: {0}".format(angular_vel))
+        # rospy.logwarn("Current velocity: {0}".format(current_vel))
+        # rospy.logwarn("Filtered velocity: {0}".format(self.vel_lpf.get()))
+   
         vel_error = linear_vel - current_vel
 
         current_time = rospy.get_time()
@@ -49,7 +54,8 @@ class Controller(object):
 
         throttle = self.throttle_controller.step(vel_error, sample_time)
         brake = 0
-
+        
+        # Brake or acclerate only 1 actor can work.
         if linear_vel == 0.0 and current_vel < 0.1:
             throttle = 0.0
             brake = 700

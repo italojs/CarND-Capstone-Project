@@ -4,3 +4,11 @@ build
 devel
 
 profile.tmp
+ros/src/twist_controller/.~lock.throttles.csv#
+ros/src/twist_controller/steers.csv
+ros/src/twist_controller/throttles.csv
+ros/src/twist_controller/brakes.csv
+ros/src/twist_controller/.~lock.steers.csv#
+data/dbw_test.rosbag.bag
+ros/src/twist_controller/vis/throttles_0.8_0.05_3.5.csv
+ros/src/twist_controller/speed.csv
