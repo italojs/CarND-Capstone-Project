@@ -9,7 +9,7 @@ This is the project repo for the final project of the Udacity Self-Driving Car N
 |:---------------|:----------------------|--------------|-------------------| 
 | italo jose     | italo.i@live.com      | @italojs     | UTC-3 (Brazil)    |
 | Yu Han         | hanyuon@163.com       | @leo         | UTC+8 (China)     |  
-| your_name      | your@email.com        | @NickName    | UTC-3             |
+| Alexander Menshchikov      | alexander.menshchikov@skolkovotech.ru        | @alex_men    | UTC+3 (Russia)             |
 | your_name      | your@email.com        | @NickName    | UTC-3             |
 | Gao Hang       | gaohangfr@hotmail.com | @sq03064140  | UTC+8 (China)     |
 
