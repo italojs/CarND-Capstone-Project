@@ -12,6 +12,9 @@ import tf
 import cv2
 import yaml
 
+import time
+# from PIL import  Image
+
 STATE_COUNT_THRESHOLD = 3
 
 class TLDetector(object):
@@ -19,6 +22,8 @@ class TLDetector(object):
         rospy.init_node('tl_detector')
 
         self.pose = None
+        self.waypoints_2d = None
+        self.waypoint_tree = None
         self.waypoints = None
         self.camera_image = None
         self.lights = []
@@ -50,8 +55,6 @@ class TLDetector(object):
         self.last_wp = -1
         self.state_count = 0
 
-        self.waypoints_2d = None
-        self.waypoint_tree = None
 
         rospy.spin()
 
@@ -123,7 +126,7 @@ class TLDetector(object):
         """
 
         # TODO remove - just testing
-        return light.state
+        # return light.state
 
 
         if(not self.has_image):
